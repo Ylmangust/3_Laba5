@@ -1,12 +1,15 @@
+package mephi.b22901.lab5;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package mortalkombatbversion;
+
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 /**
@@ -20,6 +23,7 @@ public class JFrames extends javax.swing.JFrame {
     Player enemy = null;
     Items[] items = new Items[3];
     String nameButton = "";
+    private final FileNameExtensionFilter filter = new FileNameExtensionFilter("XML, YAML, JSON Files", "xml", "yaml", "json");
 
     
     /**
@@ -123,11 +127,8 @@ public class JFrames extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Мария\\Desktop\\Kitana.jpg")); // NOI18N
-
         jButton3.setBackground(new java.awt.Color(255, 0, 0));
         jButton3.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
         jButton3.setText("Атаковать");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,7 +138,6 @@ public class JFrames extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(255, 204, 0));
         jButton4.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
         jButton4.setText("Защититься");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,12 +159,10 @@ public class JFrames extends javax.swing.JFrame {
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Damage");
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Damage");
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
@@ -179,7 +177,6 @@ public class JFrames extends javax.swing.JFrame {
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("0 уровень");
 
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
@@ -221,11 +218,9 @@ public class JFrames extends javax.swing.JFrame {
 
         jLabel19.setBackground(new java.awt.Color(255, 255, 255));
         jLabel19.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setText("1 уровень");
 
         jLabel26.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel27.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
@@ -237,12 +232,10 @@ public class JFrames extends javax.swing.JFrame {
         jLabel28.setText("Kitana ");
 
         jLabel29.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
-        jLabel29.setForeground(new java.awt.Color(0, 0, 0));
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jButton10.setBackground(new java.awt.Color(174, 183, 106));
         jButton10.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
-        jButton10.setForeground(new java.awt.Color(0, 0, 0));
         jButton10.setText("Предметы");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -429,7 +422,6 @@ public class JFrames extends javax.swing.JFrame {
 
         jButton5.setBackground(new java.awt.Color(114, 218, 142));
         jButton5.setFont(new java.awt.Font("Comic Sans MS", 0, 24)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
         jButton5.setText("Дальше");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -485,9 +477,7 @@ public class JFrames extends javax.swing.JFrame {
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel20.setText("Победа на вашей стороне");
 
-        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -722,7 +712,6 @@ public class JFrames extends javax.swing.JFrame {
 
         jRadioButton1.setBackground(new java.awt.Color(190, 182, 135));
         jRadioButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jRadioButton1.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton1.setText("Малое зелье лечение, 0 шт");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -732,7 +721,6 @@ public class JFrames extends javax.swing.JFrame {
 
         jRadioButton2.setBackground(new java.awt.Color(190, 182, 135));
         jRadioButton2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jRadioButton2.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton2.setText("Большое зелье лечение, 0 шт");
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -742,12 +730,10 @@ public class JFrames extends javax.swing.JFrame {
 
         jRadioButton3.setBackground(new java.awt.Color(190, 182, 135));
         jRadioButton3.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        jRadioButton3.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton3.setText("Крест возрождения, 0 шт");
 
         jButton9.setBackground(new java.awt.Color(239, 237, 14));
         jButton9.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(0, 0, 0));
         jButton9.setText("Использовать");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -888,8 +874,6 @@ public class JFrames extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Мария\\Desktop\\MK.jpg")); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
