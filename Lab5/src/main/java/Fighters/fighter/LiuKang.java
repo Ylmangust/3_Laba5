@@ -10,13 +10,13 @@ package Fighters.fighter;
  */
 public class LiuKang extends Fighter {
 
-    public LiuKang() {
+    public LiuKang(int level) {
         super();
-        this.level = 0;
         this.maxHP = 90;
         this.hp = 90;
         this.damage = 22;
         this.photoPath = "src/main/resources/liuKang.jpeg";
+        setLevelStuts(level);
     }
 
 

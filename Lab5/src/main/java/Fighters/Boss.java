@@ -14,6 +14,7 @@ public class Boss extends Enemy {
         super();
         int bossHealth = (int) (humanHealth * 1.5);
         int bossDamage = 25 + humanLvl * 2;
+        this.level = humanLvl;
         this.maxHP = bossHealth;
         this.hp = bossHealth;
         this.damage = bossDamage;

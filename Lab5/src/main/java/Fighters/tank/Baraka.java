@@ -10,13 +10,13 @@ package Fighters.tank;
  */
 public class Baraka extends Tank {
 
-    public Baraka() {
+    public Baraka(int level) {
         super();
-        this.level = 0;
         this.maxHP = 120;
         this.hp = 120;
         this.damage = 15;
         this.photoPath = "src/main/resources/baraka.jpeg";
+        setLevelStuts(level);
     }
 
     @Override

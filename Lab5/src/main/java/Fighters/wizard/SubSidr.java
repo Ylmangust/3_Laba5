@@ -10,13 +10,13 @@ package Fighters.wizard;
  */
 public class SubSidr extends Wizard {
 
-    public SubSidr() {
+    public SubSidr(int level) {
         super();
-        this.level = 0;
         this.maxHP = 70;
         this.hp = 70;
         this.damage = 18;
         this.photoPath = "src/main/resources/subSidr.jpeg";
+        setLevelStuts(level);
     }
 
     

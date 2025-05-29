@@ -10,13 +10,13 @@ package Fighters.soldier;
  */
 public class SonyaBlade extends Soldier{
     
-    public SonyaBlade(){
+    public SonyaBlade(int level){
         super();
-        this.level = 0;
         this.maxHP = 100;
         this.hp = 100;
         this.damage = 20;
         this.photoPath = "src/main/resources/sonyaBlade.jpeg";
+        setLevelStuts(level);
     }
 
     

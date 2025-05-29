@@ -18,17 +18,13 @@ public abstract class Player {
     protected int debuffTimer=0;
     protected String photoPath;
     
-    public Player(){
-        
-    }
-    
-    public void levelUp(int level){
+   /* public void levelUp(int level){
         double lvlUpCoef = 0.05;
         this.level = level;
         this.hp = (int)(this.maxHP*Math.pow(1+lvlUpCoef, level));
         this.maxHP = (int)(this.maxHP*Math.pow(1+lvlUpCoef, level));
         this.damage = (int)(this.damage*Math.pow(1+lvlUpCoef, level));
-    }
+    }*/
 
     public int getLevel() {
         return level;

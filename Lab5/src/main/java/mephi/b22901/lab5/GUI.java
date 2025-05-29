@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package mephi.b22901.lab5_override;
+package mephi.b22901.lab5;
 
 import Excel.Result;
 import Excel.ExcelOperator;
@@ -816,9 +816,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void showResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showResultsBtnActionPerformed
         List<Result> results = ExcelOperator.readResults();
-        if (results.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Файл с предыдущими результатами не найден или пуст!", null, JOptionPane.INFORMATION_MESSAGE);
-        } else {
+        if (!results.isEmpty()) {
             DefaultTableModel table = (DefaultTableModel) resultsTable.getModel();
             for (int i = 0; i < results.size(); i++) {
                 if (i < 10) {
