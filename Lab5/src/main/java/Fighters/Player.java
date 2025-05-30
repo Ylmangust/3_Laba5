@@ -14,7 +14,8 @@ public abstract class Player {
     protected int maxHP;
     protected int damage;
     protected boolean isStunned = false;
-    protected ActionType actionStatus = ActionType.ATTACK;
+    protected boolean isDebuffed = false;
+    protected ActionType actionStatus;
     protected int debuffTimer=0;
     protected String photoPath;
     
@@ -56,6 +57,26 @@ public abstract class Player {
 
     public void setDebuffTimer(int debuffTimer) {
         this.debuffTimer = debuffTimer;
+    }
+
+    public ActionType getActionStatus() {
+        return actionStatus;
+    }
+
+    public int getDebuffTimer() {
+        return debuffTimer;
+    }
+
+    public boolean isDebuffed() {
+        return isDebuffed;
+    }
+
+    public void setIsDebuffed(boolean isDebuffed) {
+        this.isDebuffed = isDebuffed;
+    }
+    
+    public void setHp(double hp) {
+        this.hp = (int)hp;
     }
     
     

@@ -9,5 +9,15 @@ package Fighters;
  * @author Регина
  */
 public enum ActionType {
-    ATTACK, DEFEND, DEBUFF, STUNNED //debuff - ослаблен (новое действие), stunned - оглушен (вариант защита-защита)
+    ATTACK("атака"), DEFEND("защита"), DEBUFF("ослабление"), STUNNED("оглушен"); //debuff - ослаблен (новое действие), stunned - оглушен (вариант защита-защита)
+    
+    private final String text;
+
+    private ActionType(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

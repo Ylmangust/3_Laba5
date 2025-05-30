@@ -8,11 +8,14 @@ import Fighters.ActionType;
 import Items.Item;
 import Fighters.Human;
 import Fighters.Enemy;
+import Fighters.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,79 +24,324 @@ import java.util.Random;
 public class GameLogic {
 
     private Controller controller;
-    private static final List<Item> items = new ArrayList<>(Arrays.asList(new Item("Малое зелье лечения", 0.25), new Item("Большое зелье лечения", 0.5), new Item("Крест воскрешения", 0.05)));
-    private static Human player;
-    private static Enemy enemy;
-    private static final String [] enemies = {"Baraka", "Liu Kang", "Sub Sidr", "Sonya Blade"};
-    private static final Map <Integer, Integer> allRoundsEnemiesNumber = Map.of(1, 2,
-                                                                                2, 4, 
-                                                                                3, 6, 
-                                                                                4, 8, 
-                                                                                5, 10);
-    private final Map <String, Integer> locationsNumber = Map.of("current", 1, 
-                                                            "total", 5);
-    private int currentRoundEnemyNumber;
+    private GamePhase currentPhase = GamePhase.PLAYER_TURN;
+    private List<Item> items = new ArrayList<>(Arrays.asList(new Item("Малое зелье лечения", 0.25), new Item("Большое зелье лечения", 0.5), new Item("Крест воскрешения", 0.05)));
+    private Human player;
+    private Enemy enemy;
+    private static final String[] enemies = {"Baraka", "Liu Kang", "Sub Sidr", "Sonya Blade"};
+    private static final int[] allRoundsEnemiesNumber = {2, 4, 6, 8, 10};
+    private int locationsNumber;
+    private int enemiesBeaten = 0;
     private static final Random random = new Random();
 
-    
-    public GameLogic(Controller ctrl){
+    public GameLogic(Controller ctrl) {
         this.controller = ctrl;
     }
-    
-    public void startGame(){
+
+    public void startGame(int locationsNum) {
+        this.locationsNumber = locationsNum;
         player = new Human();
         newEnemy();
     }
-    
-    public void startNewRound(String stat){
-        getNewItem();
+
+    public void startNewRound(String stat) {
         player.levelUp(stat);
         newEnemy();
+        controller.updateGUI();
     }
-    
-    private void newEnemy(){
+
+    public void startNewFight() {
+        newEnemy();
+        player.updateforNewFight();
+        controller.updateGUI();
+    }
+
+    private void newEnemy() {
         int enemyIndex = random.nextInt(enemies.length);
         String enemyName = enemies[enemyIndex];
         enemy = EnemyFactory.createEnemy(enemyName, player.getLevel(), player.getHp());
     }
-    
-    public List<Item> getItems(){
+
+    public List<Item> getItems() {
         return items;
     }
-    
-    public void getNewItem(){
+
+    public void getNewItem() {
         double probability = Math.random();
         if (probability < 0.25) {
             int currentQuantity = items.get(0).getQuantity();
-            items.get(0).setQuantity(currentQuantity+1);
-        }else if (probability < 0.4){
+            items.get(0).setQuantity(currentQuantity + 1);
+        } else if (probability < 0.4) {
             int currentQuantity = items.get(1).getQuantity();
-            items.get(1).setQuantity(currentQuantity+1);
-        }else if (probability < 0.45){
+            items.get(1).setQuantity(currentQuantity + 1);
+        } else if (probability < 0.45) {
             int currentQuantity = items.get(2).getQuantity();
-            items.get(2).setQuantity(currentQuantity+1);
+            items.get(2).setQuantity(currentQuantity + 1);
         }
     }
-    
+
     public void useItem(int index) {
         items.get(index).useItem(player);
     }
-    
-    public Human getHuman(){
+
+    public Human getHuman() {
         return player;
     }
-    
-    public Enemy getCurrentEnemy(){
+
+    public Enemy getCurrentEnemy() {
         return enemy;
     }
-    
-    public void move(GamePhase phase, ActionType humanAction, ActionType enemyAction){
-      
+
+    public void move() {
+        switch (currentPhase) {
+            case GamePhase.PLAYER_TURN:
+                if (player.isStunned()) {
+                    player.setIsStunned(false);
+                    currentPhase = GamePhase.ENEMY_TURN;
+                    controller.updateGUI();
+                    return;
+                } else {
+                    currentPhase = GamePhase.ENEMY_ANSWER;
+                }
+                controller.updateGUI();
+                break;
+
+            case GamePhase.ENEMY_TURN:
+                if (enemy.isStunned()) {
+                    controller.updateGUI();
+                    enemy.setIsStunned(false);
+                    currentPhase = GamePhase.PLAYER_TURN;
+                    controller.updateGUI();
+                    return;
+                } else {
+                    ActionType enemyAction = generateMove();
+                    enemy.setActionStatus(enemyAction);
+                    currentPhase = GamePhase.PLAYER_ANSWER;
+                }
+                controller.updateGUI();
+                break;
+
+            case GamePhase.PLAYER_ANSWER:
+                if (player.isStunned()) {
+                    player.setIsStunned(false);
+                    currentPhase = GamePhase.ENEMY_TURN;
+                    updateDebuffStatus(player);
+                    updateDebuffStatus(enemy);
+                    return;
+                } else {
+                    handleActionPair(GamePhase.PLAYER_ANSWER);
+                    currentPhase = GamePhase.PLAYER_TURN;
+                    updateDebuffStatus(player);
+                    updateDebuffStatus(enemy);
+                }
+                controller.updateGUI();
+                break;
+
+            case GamePhase.ENEMY_ANSWER:
+                if (enemy.isStunned()) {
+                    enemy.setIsStunned(false);
+                    currentPhase = GamePhase.PLAYER_TURN;
+                    updateDebuffStatus(player);
+                    updateDebuffStatus(enemy);
+                    return;
+                } else {
+                    ActionType enemyReply = generateMove();
+                    enemy.setActionStatus(enemyReply);
+                    handleActionPair(GamePhase.ENEMY_ANSWER);
+                    currentPhase = GamePhase.ENEMY_TURN;
+                    updateDebuffStatus(player);
+                    updateDebuffStatus(enemy);
+                }
+                controller.updateGUI();
+                break;
+        }
+        controller.updateGUI();
     }
-    
-    public void setLocationsNum(int num){
-        locationsNumber.put("total", num);
+
+    private void handleActionPair(GamePhase phase) {
+        switch (phase) {
+            case GamePhase.PLAYER_ANSWER:
+                if (enemy.getActionStatus() == ActionType.ATTACK && player.getActionStatus() == ActionType.ATTACK) {
+                    int damage = calculateDamage(enemy, player, false);
+                    player.setHp(player.getHp() - damage);
+                    checkEndOfRound();
+                } else if (enemy.getActionStatus() == ActionType.ATTACK && player.getActionStatus() == ActionType.DEFEND) {
+                    int damage = calculateDamage(enemy, player, true);
+                    player.setHp(player.getHp() - damage);
+                    checkEndOfRound();
+                } else if (enemy.getActionStatus() == ActionType.DEFEND && player.getActionStatus() == ActionType.DEFEND) {
+                    if (Math.random() < 0.5) {
+                        player.setIsStunned(true);
+                    }
+                } else if (enemy.getActionStatus() == ActionType.DEBUFF && player.getActionStatus() == ActionType.DEFEND) {
+                    if (Math.random() < 0.75) {
+                        player.setDebuffTimer(player.getLevel());
+                        player.setIsDebuffed(true);
+                        int damage = calculateDamage(enemy, player, false);
+                        player.setHp(player.getHp() - damage);
+                        checkEndOfRound();
+                    }
+                } else if (enemy.getActionStatus() == ActionType.DEBUFF && player.getActionStatus() == ActionType.ATTACK) {
+                    int damage = calculateDamage(player, enemy, true);
+                    enemy.setHp(enemy.getHp() - damage);
+                    checkEndOfRound();
+                }
+                break;
+            case GamePhase.ENEMY_ANSWER:
+                if (player.getActionStatus() == ActionType.ATTACK && enemy.getActionStatus() == ActionType.ATTACK) {
+                    int damage = calculateDamage(player, enemy, false);
+                    enemy.setHp(enemy.getHp() - damage);
+                    checkEndOfRound();
+                } else if (player.getActionStatus() == ActionType.ATTACK && enemy.getActionStatus() == ActionType.DEFEND) {
+                    int damage = calculateDamage(player, enemy, true);
+                    enemy.setHp(enemy.getHp() - damage);
+                    checkEndOfRound();
+                } else if (player.getActionStatus() == ActionType.DEFEND && enemy.getActionStatus() == ActionType.DEFEND) {
+                    if (Math.random() < 0.5) {
+                        enemy.setIsStunned(true);
+                    }
+                } else if (player.getActionStatus() == ActionType.DEBUFF && enemy.getActionStatus() == ActionType.DEFEND) {
+                    if (Math.random() < 0.75) {
+                        enemy.setDebuffTimer(player.getLevel());
+                        enemy.setIsDebuffed(true);
+                        int damage = calculateDamage(player, enemy, false);
+                        enemy.setHp(enemy.getHp() - damage);
+                        checkEndOfRound();
+                    }
+                } else if (enemy.getActionStatus() == ActionType.DEBUFF && player.getActionStatus() == ActionType.ATTACK) {
+                    int damage = calculateDamage(enemy, player, true);
+                    player.setHp(player.getHp() - damage);
+                    checkEndOfRound();
+                }
+                break;
+
+        }
+        checkEndOfRound();
     }
-    
+
+    private ActionType generateMove() {
+        ActionType playerLastAction = player.getActionStatus();
+        boolean playerDebuffed = player.isDebuffed();
+        int playerHP = player.getHp();
+        int enemyHP = enemy.getHp();
+
+        if (enemy.isDebuffed()) {
+            if (Math.random() < 0.6) {
+                return ActionType.DEFEND;
+            }
+            return ActionType.ATTACK;
+        }
+
+        if (enemyHP < enemy.getMaxHP() * 0.4) {
+            double prob = Math.random();
+            if (prob < 0.5) {
+                return ActionType.DEFEND;
+            }
+            if (prob < 0.8) {
+                return ActionType.ATTACK;
+            }
+            if (enemy.getType().equals("Маг")) {
+                return ActionType.DEBUFF;
+            }
+        }
+
+        if (playerLastAction == ActionType.ATTACK) {
+            double roll = Math.random();
+            if (roll < 0.4) {
+                return ActionType.DEFEND;
+            }
+            if (roll < 0.7 && enemy.getType().equals("Маг")) {
+                return ActionType.DEBUFF;
+            }
+            return ActionType.ATTACK;
+        }
+
+        if (playerLastAction == ActionType.DEFEND) {
+            double roll = Math.random();
+            if (roll < 0.5) {
+                return ActionType.ATTACK;
+            }
+            if (roll < 0.8 && enemy.getType().equals("Маг")) {
+                return ActionType.DEBUFF;
+            }
+            return ActionType.DEFEND;
+        }
+
+        if (playerDebuffed || playerHP < player.getMaxHP() * 0.5) {
+            if (Math.random() < 0.8) {
+                return ActionType.ATTACK;
+            }
+        }
+
+        double roll = Math.random();
+        if (roll < 0.45) {
+            return ActionType.ATTACK;
+        }
+        if (roll < 0.7 && enemy.getType().equals("Маг")) {
+            return ActionType.DEBUFF;
+        }
+        return ActionType.DEFEND;
+    }
+
+    public void updateDebuffStatus(Player player) {
+        if (player.isDebuffed()) {
+            player.setDebuffTimer(player.getDebuffTimer() - 1);
+            if (player.getDebuffTimer() <= 0) {
+                player.setIsDebuffed(false);
+            }
+        }
+    }
+
+    private int calculateDamage(Player attacker, Player defender, boolean toDivide) {
+        int damage = attacker.getDamage();
+
+        if (toDivide) {
+            damage = damage / 2;
+        }
+        if (defender.getActionStatus() == ActionType.DEBUFF) {
+            damage = (int) (damage * 1.15);
+        }
+        if (defender.isDebuffed()) {
+            damage = (int) (damage * 1.25);
+        }
+        if (attacker.isDebuffed()) {
+            damage = (int) (damage * 0.5);
+        }
+        return damage;
+
+    }
+
+    public GamePhase getPhase() {
+        return currentPhase;
+    }
+
+    private void checkEndOfRound() {
+        if (player.getHp() <= 0 && items.get(2).getQuantity() != 0) {
+            useItem(2);
+        } else if (player.getHp() <= 0 && items.get(2).getQuantity() == 0) {
+            controller.endGame();
+        } else if (enemy.getHp() <= 0) {
+            getNewItem();
+            player.addNewWin();
+            enemiesBeaten++;
+            if (enemy.getType().equals("Босс")) {
+                if (player.getLevel() == locationsNumber) {
+                    
+                } else {
+                    enemiesBeaten = 0;
+                    controller.startNewRound();
+                }
+            }
+            if (enemiesBeaten == allRoundsEnemiesNumber[player.getLevel() - 1]) {
+                JOptionPane.showMessageDialog(null, "Ты дошел до конца уровня! Пришло время сразиться с боссом!", null, JOptionPane.INFORMATION_MESSAGE);
+                enemy = EnemyFactory.createEnemy("Boss", player.getLevel(), player.getMaxHP());
+                player.updateforNewFight();
+                controller.updateGUI();
+                return;
+            }
+            JOptionPane.showMessageDialog(null, "Ты победил, боец! Но рано отдыхать, впереди новый бой!", null, JOptionPane.INFORMATION_MESSAGE);
+            startNewFight();
+        }
+    }
 
 }

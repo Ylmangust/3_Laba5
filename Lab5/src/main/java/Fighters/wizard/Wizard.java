@@ -4,7 +4,6 @@
  */
 package Fighters.wizard;
 
-import Fighters.BehaviourPatterns;
 import Fighters.Enemy;
 
 /**
@@ -18,14 +17,5 @@ public abstract class Wizard extends Enemy{
         this.type = "Маг";
     }
     
-    @Override
-    public void chooseBehaviourPattern() {
-        double probavility = Math.random();
-        if (probavility < 0.5) {
-            super.behaviour = BehaviourPatterns.PATTERN_1;
-        } else {
-            super.behaviour = BehaviourPatterns.PATTERN_3;
-        }
-    }
-    
+
 }

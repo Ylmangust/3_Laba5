@@ -28,6 +28,13 @@ public class Controller {
         return game.getItems();
     }
     
+    public void updateGUI(){
+        gui.updateLabels();
+    }
+    
+    public GamePhase getPhase(){
+        return game.getPhase();
+    }
     
     public void useItem(int index){
         game.useItem(index);
@@ -41,15 +48,24 @@ public class Controller {
         return game.getCurrentEnemy();
     }
     
-    public void startGame(){
-        game.startGame();
+    public void startGame(int locationsNum){
+        game.startGame(locationsNum);
     }
     
     public void startNewRound(String statToLevelUp){
         game.startNewRound(statToLevelUp);
     }
     
-    public void setLocationsNum(int roundsNum){
-        game.setLocationsNum(roundsNum);
+
+    public void move(){
+        game.move();
+    }
+    
+    public void startNewRound(){
+        gui.showStats();
+    }
+    
+    public void endGame(){
+        gui.endGame();
     }
 }

@@ -9,15 +9,7 @@ package Fighters;
  * @author Регина
  */
 public abstract class Enemy extends Player {
-
-    protected BehaviourPatterns behaviour;
     protected String type;
-
-    public abstract void chooseBehaviourPattern();
-
-    public ActionType[] getBehaviour() {
-        return behaviour.getActions();
-    }
 
     protected void setLevelStuts(int level) {
         double lvlUpCoef = 0.05;

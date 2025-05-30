@@ -42,6 +42,10 @@ public class Human extends Player {
             this.damage = (int)(this.damage*(1+lvlUpCoef));
         }
     }
+    
+    public void updateforNewFight(){
+        this.hp = this.maxHP;
+    }
 
     public int getPoints() {
         return points;
@@ -55,10 +59,7 @@ public class Human extends Player {
         return hp > 0;
     }
 
-    public void setHp(double hp) {
-        this.hp = (int)hp;
-    }
-    
+
     
 
 }

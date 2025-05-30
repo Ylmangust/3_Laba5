@@ -12,18 +12,19 @@ public class Boss extends Enemy {
 
     public Boss(int humanLvl, int humanHealth) {
         super();
+        this.type = "Босс";
         int bossHealth = (int) (humanHealth * 1.5);
         int bossDamage = 25 + humanLvl * 2;
         this.level = humanLvl;
         this.maxHP = bossHealth;
         this.hp = bossHealth;
         this.damage = bossDamage;
-        this.photoPath = "src/main/resources/shaoKhan.jpeg";
+        this.photoPath = "/shaoKhan.jpeg";
     }
 
+    
     @Override
-    public void chooseBehaviourPattern() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String toString(){
+        return "Шао Кхан";
     }
-
 }

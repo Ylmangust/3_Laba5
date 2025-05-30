@@ -4,7 +4,6 @@
  */
 package Fighters.fighter;
 
-import Fighters.BehaviourPatterns;
 import Fighters.Enemy;
 
 /**
@@ -17,16 +16,5 @@ public abstract class Fighter extends Enemy {
         super();
         this.type = "Боец";
     }
-    
-    @Override
-    public void chooseBehaviourPattern() {
-        double probavility = Math.random();
-        if (probavility < 0.25) {
-            super.behaviour = BehaviourPatterns.PATTERN_1;
-        } else if (probavility < 0.35) {
-            super.behaviour = BehaviourPatterns.PATTERN_2;
-        } else {
-            super.behaviour = BehaviourPatterns.PATTERN_2;
-        }
-    }
+
 }

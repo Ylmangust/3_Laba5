@@ -4,7 +4,9 @@
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="locationChoiceWindow">
       <Properties>
+        <Property name="defaultCloseOperation" type="int" value="2"/>
         <Property name="title" type="java.lang.String" value="&#x412;&#x44b;&#x431;&#x43e;&#x440; &#x43b;&#x43e;&#x43a;&#x430;&#x446;&#x438;&#x439;"/>
+        <Property name="modal" type="boolean" value="true"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
@@ -113,7 +115,9 @@
     </Container>
     <Container class="javax.swing.JDialog" name="resultsWindow">
       <Properties>
+        <Property name="defaultCloseOperation" type="int" value="2"/>
         <Property name="title" type="java.lang.String" value="&#x422;&#x430;&#x431;&#x43b;&#x438;&#x446;&#x430; &#x440;&#x435;&#x43a;&#x43e;&#x440;&#x434;&#x43e;&#x432;"/>
+        <Property name="modal" type="boolean" value="true"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
@@ -201,9 +205,6 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="resultsTableAncestorAdded"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -224,6 +225,7 @@
     </Container>
     <Container class="javax.swing.JDialog" name="itemBagWindow">
       <Properties>
+        <Property name="defaultCloseOperation" type="int" value="2"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
@@ -232,7 +234,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                  <Component id="itemPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -241,14 +243,14 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jPanel2" max="32767" attributes="0"/>
+                  <Component id="itemPanel" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel2">
+        <Container class="javax.swing.JPanel" name="itemPanel">
 
           <Layout>
             <DimensionLayout dim="0">
@@ -355,23 +357,26 @@
     </Container>
     <Container class="javax.swing.JDialog" name="chooseStatWindow">
       <Properties>
+        <Property name="defaultCloseOperation" type="int" value="2"/>
         <Property name="title" type="java.lang.String" value="&#x41f;&#x435;&#x440;&#x435;&#x445;&#x43e;&#x434; &#x43d;&#x430; &#x43d;&#x43e;&#x432;&#x44b;&#x439; &#x443;&#x440;&#x43e;&#x432;&#x435;&#x43d;&#x44c;"/>
+        <Property name="modal" type="boolean" value="true"/>
+        <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+              <Component id="statPanel" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <Component id="statPanel" min="-2" max="-2" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="javax.swing.JPanel" name="statPanel">
 
           <Layout>
             <DimensionLayout dim="0">
@@ -379,26 +384,26 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace pref="9" max="-2" attributes="0"/>
-                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="damageRBtn" min="-2" pref="98" max="-2" attributes="0"/>
-                                  <Component id="hpRBtn" min="-2" pref="171" max="-2" attributes="0"/>
+                                  <Component id="hpRBtn" min="-2" pref="233" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="160" max="-2" attributes="0"/>
                               <Component id="chooseStatBtn" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace pref="9" max="-2" attributes="0"/>
+                                      <Component id="congratLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="chooseStatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace pref="45" max="32767" attributes="0"/>
@@ -409,9 +414,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" pref="41" max="-2" attributes="0"/>
+                      <Component id="congratLabel" min="-2" pref="41" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabel2" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="chooseStatLabel" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="hpRBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -424,7 +429,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jLabel1">
+            <Component class="javax.swing.JLabel" name="congratLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value=" &#x41f;&#x43e;&#x437;&#x434;&#x440;&#x430;&#x432;&#x43b;&#x44f;&#x435;&#x43c;, &#x411;&#x43e;&#x435;&#x446;! &#x422;&#x44b; &#x443;&#x441;&#x43f;&#x435;&#x448;&#x43d;&#x43e; &#x43f;&#x440;&#x43e;&#x448;&#x435;&#x43b; &#x443;&#x440;&#x43e;&#x432;&#x435;&#x43d;&#x44c;!   " preCode="&#xa;"/>
               </Properties>
@@ -432,7 +437,7 @@
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JLabel(&quot;&lt;html&gt;&lt;b&gt;&#x41f;&#x43e;&#x437;&#x434;&#x440;&#x430;&#x432;&#x43b;&#x44f;&#x435;&#x43c;, &#x411;&#x43e;&#x435;&#x446;!&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&quot; +&quot;&#x422;&#x44b; &#x443;&#x441;&#x43f;&#x435;&#x448;&#x43d;&#x43e; &#x43f;&#x440;&#x43e;&#x448;&#x435;&#x43b; &#x443;&#x440;&#x43e;&#x432;&#x435;&#x43d;&#x44c;! &#x422;&#x432;&#x43e;&#x44f; &#x445;&#x440;&#x430;&#x431;&#x440;&#x43e;&#x441;&#x442;&#x44c; &#x438; &#x43c;&#x430;&#x441;&#x442;&#x435;&#x440;&#x441;&#x442;&#x432;&#x43e; &#x432;&#x43f;&#x435;&#x447;&#x430;&#x442;&#x43b;&#x44f;&#x44e;&#x442;&quot; +&#xa;    &quot;&#x422;&#x435;&#x43f;&#x435;&#x440;&#x44c; &#x443; &#x442;&#x435;&#x431;&#x44f; &#x435;&#x441;&#x442;&#x44c; &#x432;&#x43e;&#x437;&#x43c;&#x43e;&#x436;&#x43d;&#x43e;&#x441;&#x442;&#x44c; &#x443;&#x43b;&#x443;&#x447;&#x448;&#x438;&#x442;&#x44c; &#x441;&#x432;&#x43e;&#x438; &#x43d;&#x430;&#x432;&#x44b;&#x43a;&#x438;, &#x447;&#x442;&#x43e;&#x431;&#x44b; &#x441;&#x442;&#x430;&#x442;&#x44c; &#x435;&#x449;&#x435; &#x441;&#x438;&#x43b;&#x44c;&#x43d;&#x435;&#x435;!&lt;/html&gt;&quot;)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel2">
+            <Component class="javax.swing.JLabel" name="chooseStatLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x422;&#x435;&#x43f;&#x435;&#x440;&#x44c; &#x443; &#x442;&#x435;&#x431;&#x44f; &#x435;&#x441;&#x442;&#x44c; &#x432;&#x43e;&#x437;&#x43c;&#x43e;&#x436;&#x43d;&#x43e;&#x441;&#x442;&#x44c; &#x443;&#x43b;&#x443;&#x447;&#x448;&#x438;&#x442;&#x44c; &#x441;&#x432;&#x43e;&#x438; &#x43d;&#x430;&#x432;&#x44b;&#x43a;&#x438;. "/>
               </Properties>
@@ -441,6 +446,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x41c;&#x430;&#x43a;&#x441;&#x438;&#x43c;&#x430;&#x43b;&#x44c;&#x43d;&#x43e;&#x435; &#x437;&#x434;&#x43e;&#x440;&#x43e;&#x432;&#x44c;&#x435;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hpRBtnActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="damageRBtn">
               <Properties>
@@ -463,8 +471,13 @@
     </Component>
     <Container class="javax.swing.JFrame" name="gameWindow">
       <Properties>
+        <Property name="defaultCloseOperation" type="int" value="2"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="gameWindowWindowClosing"/>
+        <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="gameWindowWindowOpened"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -530,30 +543,42 @@
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="134" max="-2" attributes="0"/>
-                                      <Component id="pointsLbl" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="134" max="-2" attributes="0"/>
+                                              <Component id="pointsLbl" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="149" max="-2" attributes="0"/>
+                                              <Component id="pointsValue" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="experienceLbl" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="experienceValue" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="122" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Component id="humanHpLbl" min="-2" pref="59" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                      <Component id="humanHPBar" min="-2" pref="177" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="149" max="-2" attributes="0"/>
-                                      <Component id="pointsValue" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="playerMove" max="32767" attributes="0"/>
+                                          <Component id="enemyMove" pref="234" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="experienceLbl" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="experienceValue" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="122" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Component id="humanHpLbl" min="-2" pref="59" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="humanHPBar" min="-2" pref="177" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -565,8 +590,12 @@
                                       <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                                       <Component id="enemyName" min="-2" pref="196" max="-2" attributes="0"/>
                                   </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                                      <Component id="nextStepBtn" min="-2" pref="110" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
@@ -574,12 +603,8 @@
                                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                               <Component id="playerName" min="-2" pref="162" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jLabel3" min="-2" pref="158" max="-2" attributes="0"/>
-                                                  <Component id="jLabel4" min="-2" pref="158" max="-2" attributes="0"/>
-                                                  <Component id="turnLabel" min="-2" pref="158" max="-2" attributes="0"/>
-                                              </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="turnLabel" min="-2" pref="158" max="-2" attributes="0"/>
                                               <EmptySpace max="32767" attributes="0"/>
                                               <Component id="humanImage" min="-2" pref="241" max="-2" attributes="0"/>
                                           </Group>
@@ -587,23 +612,18 @@
                                       <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="itemsBtn" min="-2" pref="110" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                                              <Component id="attackBtn" min="-2" pref="110" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                              <Component id="defendBtn" min="-2" pref="109" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                                              <Component id="weakenBtn" min="-2" pref="110" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="humanLvl" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="itemsBtn" min="-2" pref="110" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                                      <Component id="attackBtn" min="-2" pref="110" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                                      <Component id="defendBtn" min="-2" pref="130" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="weakenBtn" min="-2" pref="110" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="humanLvl" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -614,64 +634,59 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="LocationName" min="-2" pref="64" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="turnLabel" min="-2" pref="63" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel3" min="-2" pref="63" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                              <Component id="jLabel4" min="-2" pref="63" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                              <Component id="LocationName" min="-2" pref="64" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="3" attributes="0">
-                                                  <Component id="experienceLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="pointsLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="experienceValue" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="pointsValue" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
-                                      <Component id="humanImage" min="-2" pref="341" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="23" pref="23" max="-2" attributes="0"/>
-                                              <Component id="humanHpLbl" pref="32" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Component id="humanHPBar" alignment="1" max="32767" attributes="0"/>
-                                          <Component id="enemyHPBar" alignment="1" max="32767" attributes="0"/>
-                                          <Component id="enemyHpLbl" alignment="1" min="-2" pref="36" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="experienceLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="pointsLbl" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="enemyDamafeLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="enemyDamageValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="humanDamageValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="humanDamageLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="enemyLvl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="humanLvl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="experienceValue" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="enemyImage" alignment="1" min="-2" pref="341" max="-2" attributes="0"/>
+                                  <Component id="pointsValue" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                              <Component id="humanImage" min="-2" pref="341" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="23" pref="23" max="-2" attributes="0"/>
+                                      <Component id="humanHpLbl" pref="32" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="humanHPBar" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="enemyHPBar" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="enemyHpLbl" alignment="1" min="-2" pref="36" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="enemyDamafeLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="enemyDamageValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="humanDamageValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="humanDamageLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="enemyLvl" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="humanLvl" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="enemyImage" alignment="1" min="-2" pref="341" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="turnLabel" min="-2" pref="63" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="enemyMove" min="-2" pref="63" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <Component id="playerMove" min="-2" pref="63" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="playerName" min="-2" pref="29" max="-2" attributes="0"/>
                           <Component id="enemyName" min="-2" pref="29" max="-2" attributes="0"/>
@@ -682,6 +697,7 @@
                           <Component id="defendBtn" alignment="3" max="32767" attributes="0"/>
                           <Component id="attackBtn" alignment="3" max="32767" attributes="0"/>
                           <Component id="itemsBtn" alignment="3" max="32767" attributes="0"/>
+                          <Component id="nextStepBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   </Group>
@@ -910,15 +926,12 @@
                 <Property name="text" type="java.lang.String" value="&#x418;&#x433;&#x440;&#x43e;&#x43a; (&#x412;&#x44b;)"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel3">
+            <Component class="javax.swing.JLabel" name="enemyMove">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel3"/>
+                <Property name="text" type="java.lang.String" value=" "/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel3"/>
-              </Properties>
+            <Component class="javax.swing.JLabel" name="playerMove">
             </Component>
             <Component class="javax.swing.JLabel" name="turnLabel">
               <Properties>
@@ -929,6 +942,14 @@
             </Component>
             <Component class="javax.swing.JLabel" name="enemyImage">
             </Component>
+            <Component class="javax.swing.JButton" name="nextStepBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x414;&#x430;&#x43b;&#x435;&#x435;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextStepBtnActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
@@ -938,6 +959,9 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+      <Color id="Default Cursor"/>
+    </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
