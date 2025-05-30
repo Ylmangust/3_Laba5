@@ -15,7 +15,7 @@ public class SonyaBlade extends Soldier{
         this.maxHP = 100;
         this.hp = 100;
         this.damage = 20;
-        this.photoPath = "src/main/resources/sonyaBlade.jpeg";
+        this.photoPath = "/sonyaBlade.jpeg";
         setLevelStuts(level);
     }
 

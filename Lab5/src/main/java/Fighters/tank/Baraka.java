@@ -15,7 +15,7 @@ public class Baraka extends Tank {
         this.maxHP = 120;
         this.hp = 120;
         this.damage = 15;
-        this.photoPath = "src/main/resources/baraka.jpeg";
+        this.photoPath = "/baraka.jpeg";
         setLevelStuts(level);
     }
 

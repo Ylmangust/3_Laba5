@@ -21,12 +21,13 @@ public class Controller {
         this.gui = new GUI(this);
         gui.setVisible(true);
         gui.setLocationRelativeTo(null);
-        game = new GameLogic();
+        game = new GameLogic(this);
     }
     
     public List <Item> getItems(){
         return game.getItems();
     }
+    
     
     public void useItem(int index){
         game.useItem(index);
@@ -41,6 +42,14 @@ public class Controller {
     }
     
     public void startGame(){
-        GameLogic.startGame();
+        game.startGame();
+    }
+    
+    public void startNewRound(String statToLevelUp){
+        game.startNewRound(statToLevelUp);
+    }
+    
+    public void setLocationsNum(int roundsNum){
+        game.setLocationsNum(roundsNum);
     }
 }

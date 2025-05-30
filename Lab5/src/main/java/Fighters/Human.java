@@ -15,11 +15,11 @@ public class Human extends Player {
 
     public Human() {
         super();
-        this.level = 0;
+        this.level = 1;
         this.maxHP = 85;
         this.hp = 85;
         this.damage =16;
-        this.photoPath = "src/main/resources/player.jpeg";
+        this.photoPath = "/player.jpeg";
     }
 
     public void addNewWin() {
@@ -32,9 +32,9 @@ public class Human extends Player {
         this.points = (int) (100 * (1 - (maxHP - hp) / maxHP));
     }
 
-    public void levelUp(int level, String chosenStat) {
+    public void levelUp(String chosenStat) {
         double lvlUpCoef = 0.05;
-        this.level = level;
+        this.level = level+1;
         if (chosenStat.equals("Максимальное здоровье")) {
             this.hp = (int) (this.maxHP * (1 + lvlUpCoef));
             this.maxHP = (int) (this.maxHP * (1 + lvlUpCoef));

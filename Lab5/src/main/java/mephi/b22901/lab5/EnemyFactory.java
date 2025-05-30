@@ -19,13 +19,13 @@ public class EnemyFactory {
 
     public static Enemy createEnemy(String enemyName, int level, int humanHealth) {
         switch (enemyName) {
-            case "SonyaBlade":
+            case "Sonya Blade":
                 return new SonyaBlade(level);
             case "Baraka":
                 return new Baraka(level);
-            case "LiuKang":
+            case "Liu Kang":
                 return new LiuKang(level);
-            case "SubSidr":
+            case "Sub Sidr":
                 return new SubSidr(level);
             case "Boss":
                 return new Boss(level, humanHealth);

@@ -5,6 +5,7 @@
 package Items;
 
 import Fighters.Human;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,17 +38,15 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public String useItem(Human human) {
-        String message = "";
+    public void useItem(Human human) {
         if (quantity > 0) {
             int currentHp = human.getMaxHP();
             human.setHp(currentHp * (1 + restorePercentage));
             quantity -= 1;
-            message += name + " успешно использовано!";
+            JOptionPane.showMessageDialog(null, name + " успешно использовано!", null, JOptionPane.WARNING_MESSAGE);
         }else{
-            message += name + " не может быть использовано!";
+            JOptionPane.showMessageDialog(null, name + " не может быть использовано!", null, JOptionPane.WARNING_MESSAGE);
         }
-        return message;
     }
 
     @Override

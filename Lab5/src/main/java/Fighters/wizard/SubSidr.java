@@ -15,7 +15,7 @@ public class SubSidr extends Wizard {
         this.maxHP = 70;
         this.hp = 70;
         this.damage = 18;
-        this.photoPath = "src/main/resources/subSidr.jpeg";
+        this.photoPath = "/subSidr.jpeg";
         setLevelStuts(level);
     }
 

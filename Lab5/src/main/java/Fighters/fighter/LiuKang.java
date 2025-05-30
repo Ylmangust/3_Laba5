@@ -15,7 +15,7 @@ public class LiuKang extends Fighter {
         this.maxHP = 90;
         this.hp = 90;
         this.damage = 22;
-        this.photoPath = "src/main/resources/liuKang.jpeg";
+        this.photoPath = "/liuKang.jpeg";
         setLevelStuts(level);
     }
 
