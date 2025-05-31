@@ -130,8 +130,7 @@ public class GameLogic {
                     controller.updateGUI();
                     return;
                 } else {
-                    ActionType enemyAction = generateMove();
-                    enemy.setActionStatus(enemyAction);
+                    enemy.generateMove(player.getActionStatus(), player.isDebuffed(), player.getHp(), player.getMaxHP());
                     currentPhase = GamePhase.PLAYER_ANSWER;
                 }
                 controller.updateGUI();
@@ -157,8 +156,7 @@ public class GameLogic {
                     currentPhase = GamePhase.PLAYER_TURN;
                     return;
                 } else {
-                    ActionType enemyReply = generateMove();
-                    enemy.setActionStatus(enemyReply);
+                    enemy.generateMove(player.getActionStatus(), player.isDebuffed(), player.getHp(), player.getMaxHP());
                     handleActionPair(GamePhase.ENEMY_ANSWER);
                     currentPhase = GamePhase.ENEMY_TURN;
 
@@ -287,70 +285,6 @@ public class GameLogic {
         }
         return damage;
 
-    }
-
-    private ActionType generateMove() {
-        ActionType playerLastAction = player.getActionStatus();
-        boolean playerDebuffed = player.isDebuffed();
-        int playerHP = player.getHp();
-        int enemyHP = enemy.getHp();
-
-        if (enemy.isDebuffed()) {
-            if (Math.random() < 0.6) {
-                return ActionType.DEFEND;
-            }
-            return ActionType.ATTACK;
-        }
-
-        if (enemyHP < enemy.getMaxHP() * 0.4) {
-            double prob = Math.random();
-            if (prob < 0.5) {
-                return ActionType.DEFEND;
-            }
-            if (prob < 0.8) {
-                return ActionType.ATTACK;
-            }
-            if (enemy.getType().equals("Маг")) {
-                return ActionType.DEBUFF;
-            }
-        }
-
-        if (playerLastAction == ActionType.ATTACK) {
-            double roll = Math.random();
-            if (roll < 0.4) {
-                return ActionType.DEFEND;
-            }
-            if (roll < 0.7 && enemy.getType().equals("Маг")) {
-                return ActionType.DEBUFF;
-            }
-            return ActionType.ATTACK;
-        }
-
-        if (playerLastAction == ActionType.DEFEND) {
-            double roll = Math.random();
-            if (roll < 0.5) {
-                return ActionType.ATTACK;
-            }
-            if (roll < 0.8 && enemy.getType().equals("Маг")) {
-                return ActionType.DEBUFF;
-            }
-            return ActionType.DEFEND;
-        }
-
-        if (playerDebuffed || playerHP < player.getMaxHP() * 0.5) {
-            if (Math.random() < 0.8) {
-                return ActionType.ATTACK;
-            }
-        }
-
-        double roll = Math.random();
-        if (roll < 0.45) {
-            return ActionType.ATTACK;
-        }
-        if (roll < 0.7 && enemy.getType().equals("Маг")) {
-            return ActionType.DEBUFF;
-        }
-        return ActionType.DEFEND;
     }
 
     private void updateDebuffStatus(Player player) {
