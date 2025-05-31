@@ -17,8 +17,8 @@ import java.util.List;
  * @author Регина
  */
 public class Controller {
-    GUI gui;
-    GameLogic game;
+    private GUI gui;
+    private GameLogic game;
     
     public Controller(){
         this.gui = new GUI(this);

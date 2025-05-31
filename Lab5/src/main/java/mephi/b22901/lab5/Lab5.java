@@ -13,6 +13,6 @@ package mephi.b22901.lab5;
 public class Lab5 {
 
     public static void main(String[] args) {
-        new Controller();
+        Controller ctrl = new Controller();
     }
 }

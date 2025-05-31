@@ -5,11 +5,8 @@
 package Excel;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import mephi.b22901.lab5.Lab5;
 import org.apache.poi.ss.usermodel.*;
@@ -23,20 +20,25 @@ public class ExcelOperator {
 
     private static List<Result> results = new ArrayList<>();
     private static String resultsFile;
+    private static final String RESULTS_FILE_NAME = "results.xlsx";
+
+    static {
+        try {
+            String path = new File(Lab5.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+            resultsFile = path + File.separator + RESULTS_FILE_NAME;
+        } catch (Exception e) {
+            resultsFile = RESULTS_FILE_NAME;
+        }
+    }
 
     public static List<Result> readResults() {
-        try {
-            ExcelOperator.resultsFile = new File(Lab5.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + "/Results.xlsx";
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(ExcelOperator.class.getName()).log(Level.SEVERE, null, ex);
-        }
         results.clear();
         ensureResultsFileExists();
         try {
             FileInputStream in = new FileInputStream(resultsFile);
             Workbook workbook = new XSSFWorkbook(in);
             Sheet sheet = workbook.getSheetAt(0);
-            for (int i = 1; i < sheet.getLastRowNum(); i++) {
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 String name = sheet.getRow(i).getCell(1).getStringCellValue();
                 int points = (int) sheet.getRow(i).getCell(2).getNumericCellValue();
                 results.add(new Result(name, points));
@@ -75,17 +77,19 @@ public class ExcelOperator {
                     Files.copy(in, file.toPath());
                     return;
                 }
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             createBook();
         }
     }
 
     public static void writeResults(String name, int score) {
+        readResults();
         results.add(new Result(name, score));
         results.sort((r1, r2) -> Integer.compare(r2.getPoints(), r1.getPoints()));
         JOptionPane.showMessageDialog(null, "Результат успешно записан!", null, JOptionPane.INFORMATION_MESSAGE);
-        try (XSSFWorkbook book = new XSSFWorkbook(resultsFile)) {
+        try (FileInputStream fis = new FileInputStream(resultsFile); XSSFWorkbook book = new XSSFWorkbook(fis)) {
             Sheet sheet = book.getSheetAt(0);
             for (int i = 0; i < results.size(); i++) {
                 if (i < 10) {
@@ -95,9 +99,9 @@ public class ExcelOperator {
                     row.createCell(2).setCellValue(results.get(i).getPoints());
                 }
             }
-            FileOutputStream out = new FileOutputStream(resultsFile);
-            book.write(out);
-            book.close();
+            try (FileOutputStream out = new FileOutputStream(resultsFile)) {
+                book.write(out);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException ex) {

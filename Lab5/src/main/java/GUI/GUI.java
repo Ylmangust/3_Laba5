@@ -10,14 +10,9 @@ import Fighters.ActionType;
 import Fighters.enemyFactory.Enemy;
 import Items.Item;
 import Fighters.Human;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -1078,8 +1073,9 @@ public class GUI extends javax.swing.JFrame {
     private void saveResultBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveResultBtnActionPerformed
         String name = nameField.getText();
         int score = controller.getHuman().getPoints();
-        ExcelOperator.writeResults(name, score);
         successEndGameFrame.dispose();
+        gameWindow.dispose();
+        ExcelOperator.writeResults(name, score);
     }//GEN-LAST:event_saveResultBtnActionPerformed
 
     public void updateLabels() {
