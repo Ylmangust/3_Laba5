@@ -2,20 +2,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package mephi.b22901.lab5;
+package GUI;
 
 import Excel.Result;
 import Excel.ExcelOperator;
 import Fighters.ActionType;
-import Fighters.Enemy;
+import Fighters.enemyFactory.Enemy;
 import Items.Item;
 import Fighters.Human;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import mephi.b22901.lab5.Controller;
+import Model.GamePhase;
 
 /**
  *
@@ -23,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GUI extends javax.swing.JFrame {
 
+    private String[] arenas = {"/arena1.jpeg", "/arena2.jpeg", "/arena3.jpeg", "/arena4.jpeg", "/arena5.jpeg"};
     private Controller controller;
 
     /**
@@ -32,13 +40,17 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI(Controller ctrl) {
         this.controller = ctrl;
-
+        UIManager.put("OptionPane.messageFont", new Font("Comic Sans MS", Font.PLAIN, 14));
+        UIManager.put("OptionPane.buttonFont", new Font("Comic Sans MS", Font.PLAIN, 14));
         UIManager.put("Label.font", new Font("Comic Sans MS", Font.PLAIN, 14));
         UIManager.put("Button.font", new Font("Comic Sans MS", Font.PLAIN, 14));
         UIManager.put("TextField.font", new Font("Comic Sans MS", Font.PLAIN, 14));
         UIManager.put("TextArea.font", new Font("Comic Sans MS", Font.PLAIN, 14));
         UIManager.put("RadioButton.font", new Font("Comic Sans MS", Font.PLAIN, 14));
+        UIManager.put("Table.font", new Font("Comic Sans MS", Font.PLAIN, 14));
         UIManager.put("CheckBox.font", new Font("Comic Sans MS", Font.PLAIN, 14));
+        UIManager.put("defaultFont", new Font("Comic Sans MS", Font.PLAIN, 14));
+
         initComponents();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -61,7 +73,6 @@ public class GUI extends javax.swing.JFrame {
             int value = locationNumber.getValue();
             infoLocation.setText("Выбрано локаций: " + String.valueOf(value));
         });
-        
     }
 
     /**
@@ -102,7 +113,7 @@ public class GUI extends javax.swing.JFrame {
         chooseStatBtn = new javax.swing.JButton();
         statsBtnGroup = new javax.swing.ButtonGroup();
         gameWindow = new javax.swing.JFrame();
-        gamePanel = new javax.swing.JPanel();
+        gamePanel = new Background();
         weakenBtn = new javax.swing.JButton();
         defendBtn = new javax.swing.JButton();
         humanHPBar = new javax.swing.JProgressBar();
@@ -130,7 +141,15 @@ public class GUI extends javax.swing.JFrame {
         humanImage = new javax.swing.JLabel();
         enemyImage = new javax.swing.JLabel();
         nextStepBtn = new javax.swing.JButton();
+        enemyDebuff = new javax.swing.JLabel();
+        playerDebuff = new javax.swing.JLabel();
         itemsBtnGroup = new javax.swing.ButtonGroup();
+        successEndGameFrame = new javax.swing.JDialog();
+        endGamePanel = new javax.swing.JPanel();
+        congratLbl = new javax.swing.JLabel();
+        enterNameLbl = new javax.swing.JLabel();
+        nameField = new javax.swing.JTextField();
+        saveResultBtn = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         greetingLabel = new javax.swing.JLabel();
         showResultsBtn = new javax.swing.JButton();
@@ -338,22 +357,24 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(itemPanelLayout.createSequentialGroup()
                 .addGroup(itemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(itemPanelLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(useBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                        .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(itemPanelLayout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(windowLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(itemPanelLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addGroup(itemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, itemPanelLayout.createSequentialGroup()
                                 .addComponent(item1)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(item3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(item2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(item2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(itemPanelLayout.createSequentialGroup()
+                        .addGroup(itemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(itemPanelLayout.createSequentialGroup()
+                                .addGap(70, 70, 70)
+                                .addComponent(windowLabel))
+                            .addGroup(itemPanelLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(useBtn)
+                                .addGap(26, 26, 26)
+                                .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 23, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         itemPanelLayout.setVerticalGroup(
@@ -508,11 +529,11 @@ public class GUI extends javax.swing.JFrame {
 
         enemyDamafeLbl.setBackground(new java.awt.Color(255, 255, 255));
         enemyDamafeLbl.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        enemyDamafeLbl.setText("Damage");
+        enemyDamafeLbl.setText("Урон");
 
         humanDamageLbl.setBackground(new java.awt.Color(255, 255, 255));
         humanDamageLbl.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        humanDamageLbl.setText("Damage");
+        humanDamageLbl.setText("Урон");
 
         humanDamageValue.setBackground(new java.awt.Color(255, 255, 255));
         humanDamageValue.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
@@ -525,7 +546,7 @@ public class GUI extends javax.swing.JFrame {
         enemyDamageValue.setText(" ");
 
         humanLvl.setBackground(new java.awt.Color(255, 255, 255));
-        humanLvl.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        humanLvl.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         humanLvl.setText("0 уровень");
 
         LocationName.setBackground(new java.awt.Color(255, 255, 255));
@@ -537,11 +558,11 @@ public class GUI extends javax.swing.JFrame {
 
         experienceLbl.setBackground(new java.awt.Color(255, 255, 255));
         experienceLbl.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        experienceLbl.setText("experience");
+        experienceLbl.setText("побеждено");
 
         pointsLbl.setBackground(new java.awt.Color(255, 255, 255));
         pointsLbl.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        pointsLbl.setText("points");
+        pointsLbl.setText("очки");
 
         experienceValue.setBackground(new java.awt.Color(255, 255, 255));
         experienceValue.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
@@ -552,7 +573,7 @@ public class GUI extends javax.swing.JFrame {
         pointsValue.setText("00");
 
         enemyLvl.setBackground(new java.awt.Color(255, 255, 255));
-        enemyLvl.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        enemyLvl.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         enemyLvl.setText("1 уровень");
 
         itemsBtn.setText("Предметы");
@@ -569,16 +590,25 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        humanHpLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         humanHpLbl.setText(" ");
 
+        enemyHpLbl.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         enemyHpLbl.setText(" ");
 
         playerName.setBackground(new java.awt.Color(0, 0, 0));
         playerName.setFont(new java.awt.Font("Comic Sans MS", 2, 14)); // NOI18N
         playerName.setText("Игрок (Вы)");
 
+        enemyMove.setBackground(new java.awt.Color(231, 231, 231));
+        enemyMove.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
         enemyMove.setText(" ");
 
+        playerMove.setBackground(new java.awt.Color(231, 231, 231));
+        playerMove.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
+
+        turnLabel.setBackground(new java.awt.Color(231, 231, 231));
+        turnLabel.setFont(new java.awt.Font("Comic Sans MS", 3, 16)); // NOI18N
         turnLabel.setText("Ваш ход");
 
         nextStepBtn.setText("Далее");
@@ -587,6 +617,10 @@ public class GUI extends javax.swing.JFrame {
                 nextStepBtnActionPerformed(evt);
             }
         });
+
+        enemyDebuff.setText(" ");
+
+        playerDebuff.setText(" ");
 
         javax.swing.GroupLayout gamePanelLayout = new javax.swing.GroupLayout(gamePanel);
         gamePanel.setLayout(gamePanelLayout);
@@ -598,7 +632,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(enemyLvl)
                     .addComponent(enemyHpLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
+                    .addGroup(gamePanelLayout.createSequentialGroup()
                         .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(gamePanelLayout.createSequentialGroup()
                                 .addGap(362, 362, 362)
@@ -608,7 +642,7 @@ public class GUI extends javax.swing.JFrame {
                                 .addComponent(humanDamageLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(humanDamageValue, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(86, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(gamePanelLayout.createSequentialGroup()
                         .addGap(66, 66, 66)
                         .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -647,38 +681,42 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(gamePanelLayout.createSequentialGroup()
                         .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(gamePanelLayout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(enemyImage, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(gamePanelLayout.createSequentialGroup()
                                 .addGap(67, 67, 67)
                                 .addComponent(enemyName, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(gamePanelLayout.createSequentialGroup()
                                 .addGap(114, 114, 114)
-                                .addComponent(nextStepBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(106, 106, 106)
+                                .addComponent(nextStepBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(gamePanelLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(enemyImage, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(enemyDebuff, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
-                                .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(gamePanelLayout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(playerName, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(gamePanelLayout.createSequentialGroup()
-                                        .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(humanImage, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(104, 104, 104))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
-                                .addComponent(itemsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(23, 23, 23)
-                                .addComponent(attackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)
-                                .addComponent(defendBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(weakenBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(51, 51, 51))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
                                 .addComponent(humanLvl)
-                                .addGap(40, 40, 40))))))
+                                .addGap(40, 40, 40))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
+                                .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(itemsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
+                                        .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(playerName, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(gamePanelLayout.createSequentialGroup()
+                                                .addComponent(playerDebuff, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(humanImage, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(104, 104, 104))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
+                                        .addComponent(attackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(20, 20, 20)
+                                        .addComponent(defendBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(weakenBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(51, 51, 51))))))))
         );
         gamePanelLayout.setVerticalGroup(
             gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -718,12 +756,15 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(humanLvl)))
                     .addComponent(enemyImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
-                        .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(enemyMove, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(enemyMove, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(playerMove, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(91, 91, 91)))
+                        .addGap(75, 75, 75)
+                        .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(enemyDebuff)
+                            .addComponent(playerDebuff))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(playerName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -753,6 +794,74 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(gamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        successEndGameFrame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        successEndGameFrame.setModal(true);
+
+        congratLbl.setText("Поздравляю, боец, ты дошел до конца!");
+
+        enterNameLbl.setText("Введи свое имя для сохранения результата");
+
+        nameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameFieldActionPerformed(evt);
+            }
+        });
+
+        saveResultBtn.setText("Сохранить");
+        saveResultBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveResultBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout endGamePanelLayout = new javax.swing.GroupLayout(endGamePanel);
+        endGamePanel.setLayout(endGamePanelLayout);
+        endGamePanelLayout.setHorizontalGroup(
+            endGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, endGamePanelLayout.createSequentialGroup()
+                .addGap(0, 73, Short.MAX_VALUE)
+                .addGroup(endGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, endGamePanelLayout.createSequentialGroup()
+                        .addComponent(congratLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, endGamePanelLayout.createSequentialGroup()
+                        .addComponent(enterNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))))
+            .addGroup(endGamePanelLayout.createSequentialGroup()
+                .addGroup(endGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(endGamePanelLayout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(endGamePanelLayout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(saveResultBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        endGamePanelLayout.setVerticalGroup(
+            endGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(endGamePanelLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(congratLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(enterNameLbl)
+                .addGap(39, 39, 39)
+                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(saveResultBtn)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout successEndGameFrameLayout = new javax.swing.GroupLayout(successEndGameFrame.getContentPane());
+        successEndGameFrame.getContentPane().setLayout(successEndGameFrameLayout);
+        successEndGameFrameLayout.setHorizontalGroup(
+            successEndGameFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(endGamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        successEndGameFrameLayout.setVerticalGroup(
+            successEndGameFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(endGamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -831,8 +940,9 @@ public class GUI extends javax.swing.JFrame {
         updateLabels();
         newEnemyImage();
         gameWindow.pack();
-        gameWindow.setVisible(true);
+        ((Background) gamePanel).setBackgroundImage(arenas[0]);
         gameWindow.setLocationRelativeTo(this);
+        gameWindow.setVisible(true);
         locationChoiceWindow.dispose();
 
     }//GEN-LAST:event_startBtnActionPerformed
@@ -850,15 +960,15 @@ public class GUI extends javax.swing.JFrame {
             }
 
             resultsWindow.pack();
-            resultsWindow.setVisible(true);
             resultsWindow.setLocationRelativeTo(this);
+            resultsWindow.setVisible(true);
         }
     }//GEN-LAST:event_showResultsBtnActionPerformed
 
     private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
         locationChoiceWindow.pack();
-        locationChoiceWindow.setVisible(true);
         locationChoiceWindow.setLocationRelativeTo(this);
+        locationChoiceWindow.setVisible(true);
     }//GEN-LAST:event_newGameBtnActionPerformed
 
     private void chooseStatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseStatBtnActionPerformed
@@ -867,8 +977,13 @@ public class GUI extends javax.swing.JFrame {
             String chosenStat = selectedItem.getActionCommand();
             controller.startNewRound(chosenStat);
             chooseStatWindow.dispose();
+            int locationIndex = controller.getHuman().getLevel() - 1;
+            ((Background) gamePanel).setBackgroundImage(arenas[locationIndex]);
+
+            gameWindow.setVisible(true);
             updateLabels();
-            updateEnemyLabels();
+        } else {
+            JOptionPane.showMessageDialog(null, "Необходимо выбрать хотя бы 1 навык для улучшения!", null, JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_chooseStatBtnActionPerformed
 
@@ -948,12 +1063,24 @@ public class GUI extends javax.swing.JFrame {
 
     private void gameWindowWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_gameWindowWindowClosing
         this.setEnabled(true);
+        this.setVisible(true);
     }//GEN-LAST:event_gameWindowWindowClosing
 
     private void gameWindowWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_gameWindowWindowOpened
         this.setEnabled(false);
+        this.setVisible(false);
     }//GEN-LAST:event_gameWindowWindowOpened
 
+    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameFieldActionPerformed
+
+    private void saveResultBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveResultBtnActionPerformed
+        String name = nameField.getText();
+        int score = controller.getHuman().getPoints();
+        ExcelOperator.writeResults(name, score);
+        successEndGameFrame.dispose();
+    }//GEN-LAST:event_saveResultBtnActionPerformed
 
     public void updateLabels() {
         GamePhase phase = controller.getPhase();
@@ -973,12 +1100,17 @@ public class GUI extends javax.swing.JFrame {
         humanHPBar.setValue(player.getHp());
         humanDamageValue.setText(String.valueOf(player.getDamage()));
         humanLvl.setText(String.valueOf(player.getLevel()) + " уровень");
-        experienceValue.setText(String.valueOf(player.getWins()));
+        experienceValue.setText(String.valueOf(player.getWins()) + "/35");
         pointsValue.setText(String.valueOf(player.getPoints()));
         if (player.getActionStatus() == null) {
             playerMove.setText("Ваше действие: ");
         } else {
             playerMove.setText("Ваше действие: " + player.getActionStatus().getText());
+        }
+        if (player.isDebuffed()){
+            playerDebuff.setText("Ослаблен, до снятия: " + player.getDebuffTimer());
+        }else{
+            playerDebuff.setText(" ");
         }
 
         Enemy enemy = controller.getEnemy();
@@ -996,16 +1128,17 @@ public class GUI extends javax.swing.JFrame {
         } else {
             enemyMove.setText("Действие противника: " + enemy.getActionStatus().getText());
         }
+        if (enemy.isDebuffed()){
+            enemyDebuff.setText("Ослаблен, до снятия: " + enemy.getDebuffTimer());
+        }else{
+            enemyDebuff.setText(" ");
+        }
     }
 
     private void lockPlayerActionButtons() {
         attackBtn.setEnabled(false);
         defendBtn.setEnabled(false);
         weakenBtn.setEnabled(false);
-    }
-
-    private void updateEnemyLabels() {
-
     }
 
     private void newEnemyImage() {
@@ -1029,15 +1162,24 @@ public class GUI extends javax.swing.JFrame {
     }
 
     public void showStats() {
+        gameWindow.setVisible(false);
         chooseStatWindow.pack();
-        chooseStatWindow.setVisible(true);
         chooseStatWindow.setLocationRelativeTo(this);
+        chooseStatWindow.setVisible(true);
     }
-    
-    public void endGame(){
-        JOptionPane.showMessageDialog(null, "Ты оказался слаб, боец! Попытайся в следующий раз.", null, JOptionPane.WARNING_MESSAGE);
+
+    public void endGame() {
+        JOptionPane.showMessageDialog(null, "Ты оказался слаб, боец! Попытай удачу в следующий раз.", null, JOptionPane.WARNING_MESSAGE);
         gameWindow.dispose();
     }
+
+    public void successEndGame() {
+        successEndGameFrame.pack();
+        successEndGameFrame.setLocationRelativeTo(this);
+        successEndGameFrame.setVisible(true);
+    }
+
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1050,16 +1192,20 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JDialog chooseStatWindow;
     private javax.swing.JButton closeResultsBtn;
     private javax.swing.JLabel congratLabel;
+    private javax.swing.JLabel congratLbl;
     private javax.swing.JRadioButton damageRBtn;
     private javax.swing.JButton defendBtn;
+    private javax.swing.JPanel endGamePanel;
     private javax.swing.JLabel enemyDamafeLbl;
     private javax.swing.JLabel enemyDamageValue;
+    private javax.swing.JLabel enemyDebuff;
     private javax.swing.JProgressBar enemyHPBar;
     private javax.swing.JLabel enemyHpLbl;
     private javax.swing.JLabel enemyImage;
     private javax.swing.JLabel enemyLvl;
     private javax.swing.JLabel enemyMove;
     private javax.swing.JLabel enemyName;
+    private javax.swing.JLabel enterNameLbl;
     private javax.swing.JLabel experienceLbl;
     private javax.swing.JLabel experienceValue;
     private javax.swing.JPanel gamePanel;
@@ -1083,19 +1229,23 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JDialog locationChoiceWindow;
     private javax.swing.JSlider locationNumber;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JTextField nameField;
     private javax.swing.JButton newGameBtn;
     private javax.swing.JButton nextStepBtn;
     private javax.swing.JPanel panel;
+    private javax.swing.JLabel playerDebuff;
     private javax.swing.JLabel playerMove;
     private javax.swing.JLabel playerName;
     private javax.swing.JLabel pointsLbl;
     private javax.swing.JLabel pointsValue;
     private javax.swing.JTable resultsTable;
     private javax.swing.JDialog resultsWindow;
+    private javax.swing.JButton saveResultBtn;
     private javax.swing.JButton showResultsBtn;
     private javax.swing.JButton startBtn;
     private javax.swing.JPanel statPanel;
     private javax.swing.ButtonGroup statsBtnGroup;
+    private javax.swing.JDialog successEndGameFrame;
     private javax.swing.JLabel tableNameLbl;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JLabel turnLabel;

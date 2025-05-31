@@ -2,26 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Fighters.tank;
+package Fighters.enemyFactory;
 
 /**
  *
  * @author Регина
  */
-public class Baraka extends Tank {
+public class LiuKang extends Enemy {
 
-    public Baraka(int level) {
+    public LiuKang(int level) {
         super();
-        this.maxHP = 120;
-        this.hp = 120;
-        this.damage = 15;
-        this.photoPath = "/baraka.jpeg";
+        this.maxHP = 90;
+        this.hp = 90;
+        this.damage = 22;
+        this.photoPath = "/liuKang.jpeg";
         setLevelStuts(level);
+        this.type = "Боец";
     }
 
+
+    
     @Override
-    public String toString() {
-        return "Барака";
+    public String toString(){
+        return "Лю Кан";
     }
 
 }

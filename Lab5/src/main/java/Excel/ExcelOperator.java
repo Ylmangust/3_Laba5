@@ -41,7 +41,7 @@ public class ExcelOperator {
                 int points = (int) sheet.getRow(i).getCell(2).getNumericCellValue();
                 results.add(new Result(name, points));
             }
-
+            results.sort((r1, r2) -> Integer.compare(r2.getPoints(), r1.getPoints()));
         } catch (FileNotFoundException e) {
             createBook();
         } catch (IOException ex) {
@@ -81,7 +81,10 @@ public class ExcelOperator {
         }
     }
 
-    public static void writeResults() {
+    public static void writeResults(String name, int score) {
+        results.add(new Result(name, score));
+        results.sort((r1, r2) -> Integer.compare(r2.getPoints(), r1.getPoints()));
+        JOptionPane.showMessageDialog(null, "Результат успешно записан!", null, JOptionPane.INFORMATION_MESSAGE);
         try (XSSFWorkbook book = new XSSFWorkbook(resultsFile)) {
             Sheet sheet = book.getSheetAt(0);
             for (int i = 0; i < results.size(); i++) {

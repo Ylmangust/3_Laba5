@@ -53,13 +53,6 @@ public class Human extends Player {
 
     public int getWins() {
         return wins;
-    }
-
-    public boolean isAlive() {
-        return hp > 0;
-    }
-
-
-    
+    } 
 
 }

@@ -2,28 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Fighters.fighter;
+package Fighters.enemyFactory;
+
+import Fighters.enemyFactory.Enemy;
 
 /**
  *
  * @author Регина
  */
-public class LiuKang extends Fighter {
-
-    public LiuKang(int level) {
+public class SonyaBlade extends Enemy{
+    
+    public SonyaBlade(int level){
         super();
-        this.maxHP = 90;
-        this.hp = 90;
-        this.damage = 22;
-        this.photoPath = "/liuKang.jpeg";
+        this.maxHP = 100;
+        this.hp = 100;
+        this.damage = 20;
+        this.photoPath = "/sonyaBlade.jpeg";
         setLevelStuts(level);
+        this.type = "Солдат";
     }
 
-
+    
     
     @Override
     public String toString(){
-        return "Лю Кан";
+        return "Соня Блейд";
     }
-
 }

@@ -4,7 +4,10 @@
  */
 package mephi.b22901.lab5;
 
-import Fighters.Enemy;
+import Model.GamePhase;
+import Model.GameLogic;
+import GUI.GUI;
+import Fighters.enemyFactory.Enemy;
 import Items.Item;
 import Fighters.Human;
 import java.util.List;
@@ -67,5 +70,9 @@ public class Controller {
     
     public void endGame(){
         gui.endGame();
+    }
+    
+    public void successEndGame(){
+        gui.successEndGame();
     }
 }

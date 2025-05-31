@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mephi.b22901.lab5;
+package Model;
 
+import Fighters.enemyFactory.EnemyFactory;
 import Fighters.ActionType;
 import Items.Item;
 import Fighters.Human;
-import Fighters.Enemy;
+import Fighters.enemyFactory.Enemy;
 import Fighters.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import mephi.b22901.lab5.Controller;
 
 /**
  *
@@ -23,9 +23,9 @@ import javax.swing.JOptionPane;
  */
 public class GameLogic {
 
-    private Controller controller;
+    private final Controller controller;
     private GamePhase currentPhase = GamePhase.PLAYER_TURN;
-    private List<Item> items = new ArrayList<>(Arrays.asList(new Item("Малое зелье лечения", 0.25), new Item("Большое зелье лечения", 0.5), new Item("Крест воскрешения", 0.05)));
+    private List<Item> items;
     private Human player;
     private Enemy enemy;
     private static final String[] enemies = {"Baraka", "Liu Kang", "Sub Sidr", "Sonya Blade"};
@@ -40,6 +40,7 @@ public class GameLogic {
 
     public void startGame(int locationsNum) {
         this.locationsNumber = locationsNum;
+        items = new ArrayList<>(Arrays.asList(new Item("Малое зелье лечения", 0.25), new Item("Большое зелье лечения", 0.5), new Item("Крест воскрешения", 0.05)));
         player = new Human();
         newEnemy();
     }
@@ -50,7 +51,7 @@ public class GameLogic {
         controller.updateGUI();
     }
 
-    public void startNewFight() {
+    private void startNewFight() {
         newEnemy();
         player.updateforNewFight();
         controller.updateGUI();
@@ -66,7 +67,7 @@ public class GameLogic {
         return items;
     }
 
-    public void getNewItem() {
+    private void getNewItem() {
         double probability = Math.random();
         if (probability < 0.25) {
             int currentQuantity = items.get(0).getQuantity();
@@ -75,6 +76,20 @@ public class GameLogic {
             int currentQuantity = items.get(1).getQuantity();
             items.get(1).setQuantity(currentQuantity + 1);
         } else if (probability < 0.45) {
+            int currentQuantity = items.get(2).getQuantity();
+            items.get(2).setQuantity(currentQuantity + 1);
+        }
+    }
+
+    private void getNewItemForBoss() {
+        double probability = Math.random();
+        if (probability < 0.375) {
+            int currentQuantity = items.get(0).getQuantity();
+            items.get(0).setQuantity(currentQuantity + 1);
+        } else if (probability < 0.6) {
+            int currentQuantity = items.get(1).getQuantity();
+            items.get(1).setQuantity(currentQuantity + 1);
+        } else if (probability < 0.675) {
             int currentQuantity = items.get(2).getQuantity();
             items.get(2).setQuantity(currentQuantity + 1);
         }
@@ -104,6 +119,7 @@ public class GameLogic {
                     currentPhase = GamePhase.ENEMY_ANSWER;
                 }
                 controller.updateGUI();
+                updateDebuffStatus(player);
                 break;
 
             case GamePhase.ENEMY_TURN:
@@ -119,104 +135,158 @@ public class GameLogic {
                     currentPhase = GamePhase.PLAYER_ANSWER;
                 }
                 controller.updateGUI();
+                updateDebuffStatus(enemy);
                 break;
 
             case GamePhase.PLAYER_ANSWER:
                 if (player.isStunned()) {
                     player.setIsStunned(false);
                     currentPhase = GamePhase.ENEMY_TURN;
-                    updateDebuffStatus(player);
-                    updateDebuffStatus(enemy);
                     return;
                 } else {
                     handleActionPair(GamePhase.PLAYER_ANSWER);
                     currentPhase = GamePhase.PLAYER_TURN;
-                    updateDebuffStatus(player);
-                    updateDebuffStatus(enemy);
                 }
                 controller.updateGUI();
+                updateDebuffStatus(player);
                 break;
 
             case GamePhase.ENEMY_ANSWER:
                 if (enemy.isStunned()) {
                     enemy.setIsStunned(false);
                     currentPhase = GamePhase.PLAYER_TURN;
-                    updateDebuffStatus(player);
-                    updateDebuffStatus(enemy);
                     return;
                 } else {
                     ActionType enemyReply = generateMove();
                     enemy.setActionStatus(enemyReply);
                     handleActionPair(GamePhase.ENEMY_ANSWER);
                     currentPhase = GamePhase.ENEMY_TURN;
-                    updateDebuffStatus(player);
-                    updateDebuffStatus(enemy);
+
                 }
                 controller.updateGUI();
+                updateDebuffStatus(enemy);
                 break;
         }
         controller.updateGUI();
+
     }
 
     private void handleActionPair(GamePhase phase) {
-        switch (phase) {
-            case GamePhase.PLAYER_ANSWER:
-                if (enemy.getActionStatus() == ActionType.ATTACK && player.getActionStatus() == ActionType.ATTACK) {
-                    int damage = calculateDamage(enemy, player, false);
-                    player.setHp(player.getHp() - damage);
-                    checkEndOfRound();
-                } else if (enemy.getActionStatus() == ActionType.ATTACK && player.getActionStatus() == ActionType.DEFEND) {
-                    int damage = calculateDamage(enemy, player, true);
-                    player.setHp(player.getHp() - damage);
-                    checkEndOfRound();
-                } else if (enemy.getActionStatus() == ActionType.DEFEND && player.getActionStatus() == ActionType.DEFEND) {
-                    if (Math.random() < 0.5) {
-                        player.setIsStunned(true);
-                    }
-                } else if (enemy.getActionStatus() == ActionType.DEBUFF && player.getActionStatus() == ActionType.DEFEND) {
-                    if (Math.random() < 0.75) {
-                        player.setDebuffTimer(player.getLevel());
-                        player.setIsDebuffed(true);
-                        int damage = calculateDamage(enemy, player, false);
-                        player.setHp(player.getHp() - damage);
-                        checkEndOfRound();
-                    }
-                } else if (enemy.getActionStatus() == ActionType.DEBUFF && player.getActionStatus() == ActionType.ATTACK) {
-                    int damage = calculateDamage(player, enemy, true);
-                    enemy.setHp(enemy.getHp() - damage);
-                    checkEndOfRound();
-                }
-                break;
-            case GamePhase.ENEMY_ANSWER:
-                if (player.getActionStatus() == ActionType.ATTACK && enemy.getActionStatus() == ActionType.ATTACK) {
-                    int damage = calculateDamage(player, enemy, false);
-                    enemy.setHp(enemy.getHp() - damage);
-                    checkEndOfRound();
-                } else if (player.getActionStatus() == ActionType.ATTACK && enemy.getActionStatus() == ActionType.DEFEND) {
-                    int damage = calculateDamage(player, enemy, true);
-                    enemy.setHp(enemy.getHp() - damage);
-                    checkEndOfRound();
-                } else if (player.getActionStatus() == ActionType.DEFEND && enemy.getActionStatus() == ActionType.DEFEND) {
-                    if (Math.random() < 0.5) {
-                        enemy.setIsStunned(true);
-                    }
-                } else if (player.getActionStatus() == ActionType.DEBUFF && enemy.getActionStatus() == ActionType.DEFEND) {
-                    if (Math.random() < 0.75) {
-                        enemy.setDebuffTimer(player.getLevel());
-                        enemy.setIsDebuffed(true);
-                        int damage = calculateDamage(player, enemy, false);
-                        enemy.setHp(enemy.getHp() - damage);
-                        checkEndOfRound();
-                    }
-                } else if (enemy.getActionStatus() == ActionType.DEBUFF && player.getActionStatus() == ActionType.ATTACK) {
-                    int damage = calculateDamage(enemy, player, true);
-                    player.setHp(player.getHp() - damage);
-                    checkEndOfRound();
+        ActionType playerAction = player.getActionStatus();
+        ActionType enemyAction = enemy.getActionStatus();
+        if (phase == GamePhase.PLAYER_ANSWER) {
+            handlePlayerAction(playerAction, enemyAction);
+            checkEndOfRound();
+        } else if (phase == GamePhase.ENEMY_ANSWER) {
+            handleEnemyAction(playerAction, enemyAction);
+            checkEndOfRound();
+        }
+    }
+
+    private void handlePlayerAction(ActionType playerAction, ActionType enemyAction) {
+        switch (enemyAction) {
+            case ATTACK:
+                if (playerAction == ActionType.ATTACK) {
+                    applyDamage(enemy, player, false);
+                } else if (playerAction == ActionType.DEFEND) {
+                    applyDamage(enemy, player, true);
+                } else if (playerAction == ActionType.DEBUFF) {
+                    applyDamage(player, enemy, true);
                 }
                 break;
 
+            case DEFEND:
+                if (playerAction == ActionType.DEFEND) {
+                    if (Math.random() < 0.5) {
+                        player.setIsStunned(true);
+                    }
+                } else if (playerAction == ActionType.DEBUFF) {
+                    applyDebuff(player, enemy);
+                }
+                break;
+
+            case DEBUFF:
+                if (playerAction == ActionType.DEFEND) {
+                    applyDebuff(enemy, player);
+                } else if (playerAction == ActionType.ATTACK) {
+                    applyDamage(player, enemy, false);
+                } else if (playerAction == ActionType.DEBUFF) {
+                    applyDamage(player, enemy, false);
+                    applyDamage(enemy, player, false);
+                }
+                break;
         }
-        checkEndOfRound();
+    }
+
+    private void handleEnemyAction(ActionType playerAction, ActionType enemyAction) {
+        switch (playerAction) {
+            case ATTACK:
+                if (enemyAction == ActionType.ATTACK) {
+                    applyDamage(player, enemy, false);
+                } else if (enemyAction == ActionType.DEFEND) {
+                    applyDamage(player, enemy, true);
+                } else if (enemyAction == ActionType.DEBUFF) {
+                    applyDamage(enemy, player, true);
+                }
+                break;
+
+            case DEFEND:
+                if (enemyAction == ActionType.ATTACK && enemy.getType().equals("Босс") && Math.random() < 0.15) {
+                    applyDamage(enemy, player, true);
+                } else if (enemyAction == ActionType.DEFEND) {
+                    if (Math.random() < 0.5) {
+                        enemy.setIsStunned(true);
+                    }
+                } else if (enemyAction == ActionType.DEBUFF) {
+                    applyDebuff(enemy, player);
+                }
+                break;
+
+            case DEBUFF:
+                if (enemyAction == ActionType.DEFEND) {
+                    applyDebuff(player, enemy);
+                } else if (enemyAction == ActionType.ATTACK) {
+                    applyDamage(player, enemy, false);
+                } else if (enemyAction == ActionType.DEBUFF) {
+                    applyDamage(player, enemy, false);
+                    applyDamage(enemy, player, false);
+                }
+                break;
+        }
+    }
+
+    private void applyDamage(Player attacker, Player defender, boolean toDivide) {
+        int damage = calculateDamage(attacker, defender, toDivide);
+        defender.setHp(defender.getHp() - damage);
+    }
+
+    private void applyDebuff(Player attacker, Player defender) {
+        if (Math.random() < 0.75) {
+            defender.setDebuffTimer(attacker.getLevel());
+            defender.setIsDebuffed(true);
+            int damage = calculateDamage(attacker, defender, false);
+            defender.setHp(defender.getHp() - damage);
+            controller.updateGUI();
+        }
+    }
+
+    private int calculateDamage(Player attacker, Player defender, boolean toDivide) {
+        int damage = attacker.getDamage();
+
+        if (toDivide) {
+            damage = damage / 2;
+        }
+        if (defender.getActionStatus() == ActionType.DEBUFF) {
+            damage = (int) (damage * 1.15);
+        }
+        if (defender.isDebuffed()) {
+            damage = (int) (damage * 1.25);
+        }
+        if (attacker.isDebuffed()) {
+            damage = (int) (damage * 0.5);
+        }
+        return damage;
+
     }
 
     private ActionType generateMove() {
@@ -283,32 +353,13 @@ public class GameLogic {
         return ActionType.DEFEND;
     }
 
-    public void updateDebuffStatus(Player player) {
+    private void updateDebuffStatus(Player player) {
         if (player.isDebuffed()) {
             player.setDebuffTimer(player.getDebuffTimer() - 1);
             if (player.getDebuffTimer() <= 0) {
                 player.setIsDebuffed(false);
             }
         }
-    }
-
-    private int calculateDamage(Player attacker, Player defender, boolean toDivide) {
-        int damage = attacker.getDamage();
-
-        if (toDivide) {
-            damage = damage / 2;
-        }
-        if (defender.getActionStatus() == ActionType.DEBUFF) {
-            damage = (int) (damage * 1.15);
-        }
-        if (defender.isDebuffed()) {
-            damage = (int) (damage * 1.25);
-        }
-        if (attacker.isDebuffed()) {
-            damage = (int) (damage * 0.5);
-        }
-        return damage;
-
     }
 
     public GamePhase getPhase() {
@@ -320,17 +371,22 @@ public class GameLogic {
             useItem(2);
         } else if (player.getHp() <= 0 && items.get(2).getQuantity() == 0) {
             controller.endGame();
+            return;
         } else if (enemy.getHp() <= 0) {
-            getNewItem();
             player.addNewWin();
             enemiesBeaten++;
             if (enemy.getType().equals("Босс")) {
+                getNewItemForBoss();
                 if (player.getLevel() == locationsNumber) {
-                    
+                    controller.successEndGame();
+                    return;
                 } else {
                     enemiesBeaten = 0;
                     controller.startNewRound();
+                    return;
                 }
+            } else {
+                getNewItem();
             }
             if (enemiesBeaten == allRoundsEnemiesNumber[player.getLevel() - 1]) {
                 JOptionPane.showMessageDialog(null, "Ты дошел до конца уровня! Пришло время сразиться с боссом!", null, JOptionPane.INFORMATION_MESSAGE);
@@ -338,9 +394,10 @@ public class GameLogic {
                 player.updateforNewFight();
                 controller.updateGUI();
                 return;
+            } else {
+                JOptionPane.showMessageDialog(null, "Ты победил, боец! Но рано отдыхать, впереди новый бой!", null, JOptionPane.INFORMATION_MESSAGE);
+                startNewFight();
             }
-            JOptionPane.showMessageDialog(null, "Ты победил, боец! Но рано отдыхать, впереди новый бой!", null, JOptionPane.INFORMATION_MESSAGE);
-            startNewFight();
         }
     }
 

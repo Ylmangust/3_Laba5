@@ -13,9 +13,9 @@ import javax.swing.JOptionPane;
  */
 public class Item {
 
-    protected String name;
-    protected int quantity = 0;
-    protected double restorePercentage;
+    private String name;
+    private int quantity = 0;
+    private double restorePercentage;
 
     public Item(String name, double hpRestored) {
         this.name = name;

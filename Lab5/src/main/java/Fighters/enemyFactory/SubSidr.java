@@ -2,13 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Fighters.wizard;
+package Fighters.enemyFactory;
+
+import Fighters.enemyFactory.Enemy;
 
 /**
  *
  * @author Регина
  */
-public class SubSidr extends Wizard {
+public class SubSidr extends Enemy {
 
     public SubSidr(int level) {
         super();
@@ -17,6 +19,7 @@ public class SubSidr extends Wizard {
         this.damage = 18;
         this.photoPath = "/subSidr.jpeg";
         setLevelStuts(level);
+        this.type = "Маг";
     }
 
     
